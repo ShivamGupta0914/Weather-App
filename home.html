@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+   <link 
+   rel="stylesheet" 
+   href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css" 
+   integrity="sha512-YWzhKL2whUzgiheMoBFwW8CKV4qpHQAEuvilg9FAn5VJUDwKZZxkJNuGM4XkWuk94WCrrwslk8yWNGmY1EduTA==" 
+   crossorigin="anonymous" 
+    />
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Crimson+Pro&family=Literata");
+
+*{
+    padding: 0;
+    margin: 0;
+    font-family: "Crimson",sans-serif;
+}
+
+body{
+    background:#173216 ;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    height:100vh;
+    width: 100vw;
+}
+
+html,
+body{
+    font-size: 62.5%;
+    height: 100%;
+}
+
+html{
+    background:rgb(151, 135, 135);
+}
+
+.box{
+   width: 20vw;
+   height: 60vh;
+   border-radius: 0.5rem;
+   box-shadow: 0 0.2rem 3rem rgba(119, 22, 22, 0.2);
+   background: #1e5ab4;
+   position: relative;
+   overflow: hidden;
+   transform: translate3d(0,0,0);
+   min-width: 20rem;
+   min-height: 35rem; 
+}
+
+.wave{
+    opacity: 0.3;
+    position: absolute;
+    top: 120%;
+    left: 50%;
+    background: rgb(182, 153, 216);
+    width: 50rem;
+    height: 50rem;
+    margin-left: -25rem;
+    margin-top: -25rem;
+    transform-origin: 50% 48%;
+    border-radius: 43%;
+    animation: drift 3000ms infinite linear;
+    z-index: 1;
+}
+
+.one{
+    animation: drift 5000ms infinite linear;
+    z-index: 2 !important;
+    opacity: 0.1;
+}
+
+.two{
+    animation: drift 7000ms infinite linear;
+    opacity: 0.2;
+    z-index: 3 !important;
+}
+
+.box:after{
+    content:"";
+    display: block;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 11;
+    transform: translate3d(0,0,0);
+}
+
+@keyframes drift{
+    from{
+        transform: rotate(0deg);
+    }
+    from{
+        transform: rotate(360deg);
+    }
+}
+
+.info{
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 45%;
+    z-index: 4;
+}
+
+.location{
+    margin-top: 1.5rem;
+    text-align: center;
+    font-weight: 800;
+    font-size: 3rem;
+    font-weight: 600;
+}
+
+
+.fa-street-view{
+    animation: rotates 2s linear infinite alternate;
+}
+
+@keyframes rotates{
+    from{
+        transform: translateX(-0.5rem);
+    }
+    to{
+        transform: translateX(0.4rem);
+    }
+}
+
+#date {
+    text-align: center;
+    margin-top: 0.5rem;
+    color: #01050b;
+    font-size: 1.4rem;
+    font-weight:300;
+    text-transform: uppercase;
+    }
+    .temp {
+    margin-top: 2.5rem;
+    text-align: center;
+    font-size: 4rem;
+    }
+    
+    .tempmin_max {
+    text-align: center;
+    margin-top:0.3rem;
+    font-weight: 300;
+    font-size: 1.4rem;
+    color: #01050b;
+    }
+    #weathercon {
+    height: 55%;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 3em;
+    }
+    
+    #weathercon .fa-solid{
+    font-size: 6rem;
+    animation: fas-anime 3s linear infinite alternate;
+    }
+    
+    @keyframes fas-anime{
+    from{
+    transform: scale(1.0);
+    }
+    to{
+    transform:scale(1.6);
+    }
+    }
+    @media (max-width: 600px){
+    .box{
+    width:90vw;
+    height: 80vh;
+    }
+    .wave{
+        top:85%;
+    }
+
+    #weathercon{
+        font-size: 5rem;
+    }
+
+    .info{
+        font-size: 1.5rem;
+    }
+
+}
+
+@media (max-height: 500px){
+    .box{
+        height: 80vh;
+    }
+
+    .wave{
+        top: 115%;
+    }
+
+}
+
+body>span{
+    width: 100vh;
+    text-align: center;
+    color: green;
+}
+ 
+    </style>
+    <title>Weather App</title>
+</head>
+
+<body>
+    <div class="box">
+        <div class="wave -one"></div>
+        <div class="wave two"></div>
+        <div class="wave three"></div>
+        <div id="weathercon"><i class="fa-solid fa-sun" style="color: #ebbf3b"></i> 
+         </div>
+
+         <div class="info">
+            <h2 class="location"><i class="fas fa-street-view" style="color: #3e3c38"></i>{%location%},{%country%}</h2>
+            <p id="date">SUN | JUN 19 | 7:57PM </p>
+            <h1 class="temp">{%tempval%}</h1>
+            <h3 class="tempmin_max">Min {%tempmin%} | Max {%tempmax%}</h3>
+            </div>
+        </div>
+        <script>
+            const currDate =document.getElementById("date");
+            let weathercon = document.getElementById('weathercon');
+            const tempStatus = "{%tempstatus%}";
+            if(tempStatus=="Sunny"){ 
+                weathercon.innerHTML="<i class='fa-solid fa-sun' style='color: #eccc68'></i>";
+            }else if(tempStatus=="Clouds"){ 
+                weathercon.innerHTML="<i class='fa-solid fa-cloud' style='color: #f1f2f6'></i>";
+            }else if(tempStatus=="Rainy"){ 
+                weathercon.innerHTML="<i class='fa-solid fa-cloud-rain' style='color: #a4b0be'></i>";
+            }else {
+                weathercon.innerHTML="<i class='fa-solid fa-sun' style='color:  #ebbf3b'></i>";
+            }
+
+            const getCurrDay =()=>{
+                var weekday = new Array(7);
+                weekday[0]="SUN";
+                weekday[1]="MON";
+                weekday[2]="TUE";
+                weekday[3]="WED";
+                weekday[4]="THU";
+                weekday[5]="FRI";
+                weekday[6]="SAT";
+                let currentTime=new Date();
+                let day=weekday[currentTime.getDay()];
+                return day;
+            };
+           
+            const getCurrTime= ()=>{
+                var months = new Array(12);
+                months[0]="JAN";
+                months[1]="FEB";
+                months[2]="MAR";
+                months[3]="APR";
+                months[4]="MAY";
+                months[5]="JUN";
+                months[6]="JULY";
+                months[7]="AUG";
+                months[8]="SEPT";
+                months[9]="OCT";
+                months[10]="NOV";
+                months[11]="DEC";
+
+                var now=new Date(); 
+                var month = now.getMonth(); 
+                var date = now.getDate();
+                let hours=now.getHours();
+                let mins = now.getMinutes();
+                let periods = "AM"
+                if(hours<10){
+                    hours="0"+hours; 
+                } 
+                if(hours>11){
+                    periods="PM";
+                    if(hours>12) hours=hours-12;
+                }
+               
+                if(mins<10){
+                    mins = "0"+mins;
+                }
+                return `${months[month]} ${date} | ${hours}:${mins}${periods}`; 
+            };
+            currDate.innerHTML = getCurrDay() + " " +" | " + getCurrTime(); 
+        </script> 
+</body>
+</html>
